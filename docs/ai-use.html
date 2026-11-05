@@ -2859,10 +2859,11 @@ font-size: 0.88rem;
 <p><strong>Before using AI for the required extension, briefly state your question, course-based core model, baseline result, and the specific limitation or opportunity you wanted to address.</strong></p>
 <p>Question: How is mental health associated with age, gender, county, profession, daily usage hours, primary platform, notification frequency and sleep disruption?</p>
 <p>Model:</p>
-<p><span class="math display">\[
-y_i = \beta_0+\beta_1\text{age}_i + \beta_2\text{gender}_i +\beta_3\text{country}_i +\beta_4\text{profession}_i+\beta_5\text{usage}_i+\beta_6\text{platform}_i+\beta_7\text{notifications}_i+\beta_8\text{sleep_distruption}_i + \epsilon_i
-\\ \epsilon\overset{\text{i.i.d.}}{\sim} N(0,\sigma^2)
-\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+y_i &amp;= \beta_0 + \beta_1 \text{age}_i + \beta_2 \text{gender}_i + \beta_3 \text{country}_i + \beta_4 \text{profession}_i \\
+&amp;\quad + \beta_5 \text{usage}_i + \beta_6 \text{platform}_i + \beta_7 \text{notifications}_i + \beta_8 \text{sleep\_disruption}_i + \epsilon_i \\
+\epsilon &amp;\sim \mathcal{N}(0, \sigma^2)
+\end{aligned}\]</span></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
@@ -2940,7 +2941,11 @@ F-statistic: 0.7614 on 36 and 1963 DF,  p-value: 0.846</code></pre>
 <p>I am creating a regression case study in R and Quarto. </p>
 <p>Question: How is mental health associated with age, gender, county, profession, daily usage hours, primary platform, notification frequency and sleep disruption? </p>
 <p>Model: </p>
-<p>$$ y_i = \beta_0+\beta_1\text{age}_i + \beta_2\text{gender}_i +\beta_3\text{country}_i +\beta_4\text{profession}_i+\beta_5\text{usage}_i+\beta_6\text{platform}_i+\beta_7\text{notifications}_i+\beta_8\text{sleep_distruption}_i + \epsilon_i \\ \epsilon\overset{\text{i.i.d.}}{\sim} N(0,\sigma^2) $$</p>
+<p><span class="math display">\[\begin{aligned}
+y_i &amp;= \beta_0 + \beta_1 \text{age}_i + \beta_2 \text{gender}_i + \beta_3 \text{country}_i + \beta_4 \text{profession}_i \\
+&amp;\quad + \beta_5 \text{usage}_i + \beta_6 \text{platform}_i + \beta_7 \text{notifications}_i + \beta_8 \text{sleep\_disruption}_i + \epsilon_i \\
+\epsilon &amp;\sim \mathcal{N}(0, \sigma^2)
+\end{aligned}\]</span></p>
 <p>{r} library(tidyverse) library(car) social_media &lt;- read.csv(“social_media_user_behavior.csv”) %&gt;% select(self_reported_mental_health_score, sleep_disruption, notification_frequency, daily_usage_hours, primary_platform, profession, country, gender, age) %&gt;% rename(mental_health = self_reported_mental_health_score) fitted_social &lt;- lm(mental_health ~ ., data = social_media) summary(fitted_social)</p>
 <p>Limitation: Our R^2 is very small and show that these predictors don’t explain for a lot of the variation in mental health. </p>
 <p>Opportunity: There may be other data that is linked more directly with mental health and social media or mental health and other predictors that represent it well. Suggest three feasible extensions that keep the core analysis connected to regression methods taught in my class. One option may be a model not taught in class used as a comparator. For each, explain how it strengthens the same research question, how its result would enter the final case study, the implementation steps, and two ways I could verify it. Do not choose for me.</p>
@@ -2949,8 +2954,8 @@ F-statistic: 0.7614 on 36 and 1963 DF,  p-value: 0.846</code></pre>
 <section id="my-decisions" class="level2">
 <h2 class="anchored" data-anchor-id="my-decisions">My decisions</h2>
 <ul>
-<li><strong>Accepted:</strong> Relax the linearity rule for some of our predictors, mainly the continuous ones like age and daily usage by using smooth spline functions.</li>
-<li><strong>Changed:</strong> We changed the linearity rule for our continuous predictors in order to be splines.</li>
+<li><strong>Accepted:</strong> Relax the linearity rule for some of our predictors, mainly the continuous ones like age and daily usage by using smooth spline functions. ** Dr White recomended a “cumulative link” model extension for our case specifically where our response variable is measured on a Likert scale.</li>
+<li><strong>Changed:</strong> We changed the linearity rule for our continuous predictors in order to be splines. We will further look into AI based on Dr. White’s recommendation of a cumulative link model.</li>
 <li><strong>Rejected or corrected:</strong> AI suggested a forest method but it was beyond our understanding and knowledge.</li>
 </ul>
 <p><strong>Connection to the final case study:</strong> Adding a spline will effect our final model and affect every step along the way but we ultimately decided to use splines to help with our continuous predictors. We will justify a spline model in our final page.</p>
@@ -2959,22 +2964,47 @@ F-statistic: 0.7614 on 36 and 1963 DF,  p-value: 0.846</code></pre>
 <h2 class="anchored" data-anchor-id="independent-verification">Independent verification</h2>
 <ol type="1">
 <li><p><strong>Check and result:</strong></p>
-<pre class="{r}```}"><code>influence_data &lt;- social_media %&gt;%
-  mutate(
-    row = row_number(),
-    leverage = hatvalues(fitted_social),
-    std_resid = rstandard(fitted_social),
-    cooks_d = cooks.distance(fitted_social)
-  )
-
-influence_data %&gt;% slice_max(cooks_d, n = 5) %&gt;% select(row, cooks_d)
-influence_data %&gt;% slice_max(leverage, n = 3) %&gt;% select(row, leverage)
-influence_data %&gt;% slice_max(abs(std_resid), n = 3) %&gt;% select(row, std_resid)</code></pre></li>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>influence_data <span class="ot">&lt;-</span> social_media <span class="sc">%&gt;%</span> <span class="fu">mutate</span>( <span class="at">row =</span> <span class="fu">row_number</span>(), <span class="at">leverage =</span> <span class="fu">hatvalues</span>(fitted_social), <span class="at">std_resid =</span> <span class="fu">rstandard</span>(fitted_social), <span class="at">cooks_d =</span> <span class="fu">cooks.distance</span>(fitted_social))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>influence_data <span class="sc">%&gt;%</span> <span class="fu">slice_max</span>(cooks_d, <span class="at">n =</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(row, cooks_d) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   row     cooks_d
+1 1842 0.006467608
+2  684 0.006008242
+3 1950 0.005863640
+4 1793 0.005686604
+5 1606 0.005537725</code></pre>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>influence_data <span class="sc">%&gt;%</span> <span class="fu">slice_max</span>(leverage, <span class="at">n =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(row, leverage) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   row   leverage
+1  194 0.04619280
+2  684 0.04550201
+3 1668 0.04520841</code></pre>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>influence_data <span class="sc">%&gt;%</span> <span class="fu">slice_max</span>(<span class="fu">abs</span>(std_resid), <span class="at">n =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(row, std_resid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   row std_resid
+1   11 -2.987841
+2 1950 -2.985837
+3 1250 -2.881560</code></pre>
+</div>
+</div></li>
 <li><p><strong>Check and result:</strong></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">avPlots</span>(fitted_social, <span class="at">terms =</span> <span class="sc">~</span> mental_health <span class="sc">+</span> daily_usage_hours <span class="sc">+</span> age)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">avPlots</span>(fitted_social, <span class="at">terms =</span> <span class="sc">~</span> mental_health <span class="sc">+</span> daily_usage_hours <span class="sc">+</span> age)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -2985,7 +3015,7 @@ influence_data %&gt;% slice_max(abs(std_resid), n = 3) %&gt;% select(row, std_re
 </div>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(<span class="fu">resid</span>(fitted_social)); <span class="fu">qqline</span>(<span class="fu">resid</span>(fitted_social))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(<span class="fu">resid</span>(fitted_social)); <span class="fu">qqline</span>(<span class="fu">resid</span>(fitted_social))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -2996,7 +3026,7 @@ influence_data %&gt;% slice_max(abs(std_resid), n = 3) %&gt;% select(row, std_re
 </div>
 <details class="code-fold">
 <summary>Show code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(<span class="fu">resid</span>(fitted_social))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(<span class="fu">resid</span>(fitted_social))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -3007,6 +3037,7 @@ W = 0.99681, p-value = 0.000356</code></pre>
 </div>
 </div></li>
 </ol>
+<p>**NOTE: we did not understand what “verification” meant for this assignment, so we ran LINE assumptions on our data without running any verifications on what Gemini recommended with adding splines. We talked to Dr White and he said this was fine to submit as is as long as we include this note.</p>
 <p>Link or cite verification sources where appropriate. A second AI response does not count as independent verification.</p>
 </section>
 <section id="remaining-limitation" class="level2">

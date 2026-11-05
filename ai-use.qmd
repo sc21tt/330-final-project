@@ -2,24 +2,34 @@
 title: "AI Use and Verification"
 description: "A concise record of AI-supported work on this project."
 author: "Sami Schofield, Claire Uryan, Annmarie Scott"
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-This page is a work log, not a second report. Short bullets are welcome. It is separate from the final case study and does not count toward the 750 to 1,000 word range.
+This page is a work log, not a second report. Short bullets are welcome.
+It is separate from the final case study and does not count toward the
+750 to 1,000 word range.
 
 ## Starting point
 
 **AI system and date:** Gemini November 4
 
-**Before using AI for the required extension, briefly state your question, course-based core model, baseline result, and the specific limitation or opportunity you wanted to address.**
+**Before using AI for the required extension, briefly state your
+question, course-based core model, baseline result, and the specific
+limitation or opportunity you wanted to address.**
 
-Question: How is mental health associated with age, gender, county, profession, daily usage hours, primary platform, notification frequency and sleep disruption?
+Question: How is mental health associated with age, gender, county,
+profession, daily usage hours, primary platform, notification frequency
+and sleep disruption?
 
 Model:
 
-$$
-y_i = \beta_0+\beta_1\text{age}_i + \beta_2\text{gender}_i +\beta_3\text{country}_i +\beta_4\text{profession}_i+\beta_5\text{usage}_i+\beta_6\text{platform}_i+\beta_7\text{notifications}_i+\beta_8\text{sleep_distruption}_i + \epsilon_i 
-\\ \epsilon\overset{\text{i.i.d.}}{\sim} N(0,\sigma^2)
-$$
+$$\begin{aligned}
+y_i &= \beta_0 + \beta_1 \text{age}_i + \beta_2 \text{gender}_i + \beta_3 \text{country}_i + \beta_4 \text{profession}_i \\
+&\quad + \beta_5 \text{usage}_i + \beta_6 \text{platform}_i + \beta_7 \text{notifications}_i + \beta_8 \text{sleep\_disruption}_i + \epsilon_i \\
+\epsilon &\sim \mathcal{N}(0, \sigma^2)
+\end{aligned}$$
 
 ```{r}
 library(tidyverse)
@@ -31,51 +41,80 @@ fitted_social <- lm(mental_health ~ ., data = social_media)
 summary(fitted_social)
 ```
 
-Limitation: Our R\^2 is very small and show that these predictors don't explain for a lot of the variation in mental health.
+Limitation: Our R\^2 is very small and show that these predictors don't
+explain for a lot of the variation in mental health.
 
-Opportunity: There may be other data that is linked more directly with mental health and social media or mental health and other predictors that represent it well.
+Opportunity: There may be other data that is linked more directly with
+mental health and social media or mental health and other predictors
+that represent it well.
 
 ## Substantive prompts
 
-Paste the exact prompts that shaped the extension. Include the customized extension-selection prompt from the checkpoint and any important implementation follow-ups. Delete unused prompt blocks.
+Paste the exact prompts that shaped the extension. Include the
+customized extension-selection prompt from the checkpoint and any
+important implementation follow-ups. Delete unused prompt blocks.
 
 > I am creating a regression case study in R and Quarto. 
 >
-> Question: How is mental health associated with age, gender, county, profession, daily usage hours, primary platform, notification frequency and sleep disruption? 
+> Question: How is mental health associated with age, gender, county,
+> profession, daily usage hours, primary platform, notification
+> frequency and sleep disruption? 
 >
 > Model: 
 >
-> \$\$ y_i = \\beta_0+\\beta_1\\text{age}\_i + \\beta_2\\text{gender}\_i +\\beta_3\\text{country}\_i +\\beta_4\\text{profession}\_i+\\beta_5\\text{usage}\_i+\\beta_6\\text{platform}\_i+\\beta_7\\text{notifications}\_i+\\beta_8\\text{sleep_distruption}\_i + \\epsilon_i \\\\ \\epsilon\\overset{\\text{i.i.d.}}{\\sim} N(0,\\sigma\^2) \$\$
+> $$\begin{aligned}
+> y_i &= \beta_0 + \beta_1 \text{age}_i + \beta_2 \text{gender}_i + \beta_3 \text{country}_i + \beta_4 \text{profession}_i \\
+> &\quad + \beta_5 \text{usage}_i + \beta_6 \text{platform}_i + \beta_7 \text{notifications}_i + \beta_8 \text{sleep\_disruption}_i + \epsilon_i \\
+> \epsilon &\sim \mathcal{N}(0, \sigma^2)
+> \end{aligned}$$
 >
-> {r} library(tidyverse) library(car) social_media \<- read.csv("social_media_user_behavior.csv") %\>% select(self_reported_mental_health_score, sleep_disruption, notification_frequency, daily_usage_hours, primary_platform, profession, country, gender, age) %\>% rename(mental_health = self_reported_mental_health_score) fitted_social \<- lm(mental_health \~ ., data = social_media) summary(fitted_social)
+> {r} library(tidyverse) library(car) social_media \<-
+> read.csv("social_media_user_behavior.csv") %\>%
+> select(self_reported_mental_health_score, sleep_disruption,
+> notification_frequency, daily_usage_hours, primary_platform,
+> profession, country, gender, age) %\>% rename(mental_health =
+> self_reported_mental_health_score) fitted_social \<- lm(mental_health
+> \~ ., data = social_media) summary(fitted_social)
 >
-> Limitation: Our R\^2 is very small and show that these predictors don't explain for a lot of the variation in mental health. 
+> Limitation: Our R\^2 is very small and show that these predictors
+> don't explain for a lot of the variation in mental health. 
 >
-> Opportunity: There may be other data that is linked more directly with mental health and social media or mental health and other predictors that represent it well. Suggest three feasible extensions that keep the core analysis connected to regression methods taught in my class. One option may be a model not taught in class used as a comparator. For each, explain how it strengthens the same research question, how its result would enter the final case study, the implementation steps, and two ways I could verify it. Do not choose for me.
+> Opportunity: There may be other data that is linked more directly with
+> mental health and social media or mental health and other predictors
+> that represent it well. Suggest three feasible extensions that keep
+> the core analysis connected to regression methods taught in my class.
+> One option may be a model not taught in class used as a comparator.
+> For each, explain how it strengthens the same research question, how
+> its result would enter the final case study, the implementation steps,
+> and two ways I could verify it. Do not choose for me.
 
 ## My decisions
 
-- **Accepted:** Relax the linearity rule for some of our predictors, mainly the continuous ones like age and daily usage by using smooth spline functions.
-- **Changed:** We changed the linearity rule for our continuous predictors in order to be splines.
-- **Rejected or corrected:** AI suggested a forest method but it was beyond our understanding and knowledge.
+- **Accepted:** Relax the linearity rule for some of our predictors,
+  mainly the continuous ones like age and daily usage by using smooth
+  spline functions. \*\* Dr White recomended a "cumulative link" model
+  extension for our case specifically where our response variable is
+  measured on a Likert scale.
+- **Changed:** We changed the linearity rule for our continuous
+  predictors in order to be splines. We will further look into AI based
+  on Dr. White's recommendation of a cumulative link model.
+- **Rejected or corrected:** AI suggested a forest method but it was
+  beyond our understanding and knowledge.
 
-**Connection to the final case study:** Adding a spline will effect our final model and affect every step along the way but we ultimately decided to use splines to help with our continuous predictors. We will justify a spline model in our final page.
+**Connection to the final case study:** Adding a spline will effect our
+final model and affect every step along the way but we ultimately
+decided to use splines to help with our continuous predictors. We will
+justify a spline model in our final page.
 
 ## Independent verification
 
 1.  **Check and result:**
 
-    ```{r}```}
-    influence_data <- social_media %>%
-      mutate(
-        row = row_number(),
-        leverage = hatvalues(fitted_social),
-        std_resid = rstandard(fitted_social),
-        cooks_d = cooks.distance(fitted_social)
-      )
+    ```{r}
+    influence_data <- social_media %>% mutate( row = row_number(), leverage = hatvalues(fitted_social), std_resid = rstandard(fitted_social), cooks_d = cooks.distance(fitted_social))
 
-    influence_data %>% slice_max(cooks_d, n = 5) %>% select(row, cooks_d)
-    influence_data %>% slice_max(leverage, n = 3) %>% select(row, leverage)
+    influence_data %>% slice_max(cooks_d, n = 5) %>% select(row, cooks_d) 
+    influence_data %>% slice_max(leverage, n = 3) %>% select(row, leverage) 
     influence_data %>% slice_max(abs(std_resid), n = 3) %>% select(row, std_resid)
     ```
 
@@ -87,11 +126,19 @@ Paste the exact prompts that shaped the extension. Include the customized extens
     shapiro.test(resid(fitted_social))
     ```
 
-Link or cite verification sources where appropriate. A second AI response does not count as independent verification.
+\*\*NOTE: we did not understand what "verification" meant for this
+assignment, so we ran LINE assumptions on our data without running any
+verifications on what Gemini recommended with adding splines. We talked
+to Dr White and he said this was fine to submit as is as long as we
+include this note.
+
+Link or cite verification sources where appropriate. A second AI
+response does not count as independent verification.
 
 ## Remaining limitation
 
-Our data has a lot of categorical data that cannot always be accounted for in the different plots and models.
+Our data has a lot of categorical data that cannot always be accounted
+for in the different plots and models.
 
 ## Other AI use, if any
 
