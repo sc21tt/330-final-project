@@ -11,90 +11,90 @@
     "href": "ai-use.html#starting-point",
     "title": "AI Use and Verification",
     "section": "Starting point",
-    "text": "Starting point\nAI system and date: Replace.\nBefore using AI for the required extension, briefly state your question, course-based core model, baseline result, and the specific limitation or opportunity you wanted to address."
+    "text": "Starting point\nAI system and date: Gemini November 4\nBefore using AI for the required extension, briefly state your question, course-based core model, baseline result, and the specific limitation or opportunity you wanted to address.\nQuestion: How is mental health associated with age, gender, county, profession, daily usage hours, primary platform, notification frequency and sleep disruption?\nModel:\n\\[\ny_i = \\beta_0+\\beta_1\\text{age}_i + \\beta_2\\text{gender}_i +\\beta_3\\text{country}_i +\\beta_4\\text{profession}_i+\\beta_5\\text{usage}_i+\\beta_6\\text{platform}_i+\\beta_7\\text{notifications}_i+\\beta_8\\text{sleep_distruption}_i + \\epsilon_i\n\\\\ \\epsilon\\overset{\\text{i.i.d.}}{\\sim} N(0,\\sigma^2)\n\\]\n\n\nShow code\nlibrary(tidyverse)\nlibrary(car)\nsocial_media &lt;- read.csv(\"social_media_user_behavior.csv\") %&gt;%\nselect(self_reported_mental_health_score, sleep_disruption, notification_frequency, daily_usage_hours, primary_platform, profession, country, gender, age) %&gt;%\nrename(mental_health = self_reported_mental_health_score)\nfitted_social &lt;- lm(mental_health ~ ., data = social_media)\nsummary(fitted_social)\n\n\n\nCall:\nlm(formula = mental_health ~ ., data = social_media)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-5.2030 -1.2176  0.0306  1.2124  4.1481 \n\nCoefficients:\n                                      Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)                           6.029855   0.284262  21.212   &lt;2e-16 ***\nsleep_disruptionModerate impact       0.158648   0.104152   1.523   0.1279    \nsleep_disruptionNo impact             0.099938   0.098524   1.014   0.3105    \nsleep_disruptionSevere impact         0.045659   0.136165   0.335   0.7374    \nnotification_frequencyDo Not Disturb  0.032542   0.112289   0.290   0.7720    \nnotification_frequencyOff            -0.020231   0.145487  -0.139   0.8894    \nnotification_frequencySelected       -0.034082   0.096690  -0.352   0.7245    \ndaily_usage_hours                     0.020028   0.021303   0.940   0.3473    \nprimary_platformInstagram            -0.171327   0.137983  -1.242   0.2145    \nprimary_platformLinkedIn             -0.168197   0.199283  -0.844   0.3988    \nprimary_platformPinterest            -0.059153   0.218622  -0.271   0.7867    \nprimary_platformSnapchat             -0.439325   0.176821  -2.485   0.0131 *  \nprimary_platformTikTok               -0.257235   0.139331  -1.846   0.0650 .  \nprimary_platformTwitter/X            -0.150619   0.146466  -1.028   0.3039    \nprimary_platformYouTube              -0.176535   0.154624  -1.142   0.2537    \nprofessionDoctor                      0.151621   0.189555   0.800   0.4239    \nprofessionEngineer                    0.127574   0.180737   0.706   0.4804    \nprofessionEntrepreneur               -0.022213   0.184803  -0.120   0.9043    \nprofessionFreelancer                  0.153858   0.187767   0.819   0.4127    \nprofessionMarketer                    0.323881   0.183046   1.769   0.0770 .  \nprofessionOther                       0.135544   0.183240   0.740   0.4596    \nprofessionResearcher                  0.322251   0.183812   1.753   0.0797 .  \nprofessionStudent                     0.322226   0.186153   1.731   0.0836 .  \nprofessionTeacher                     0.233421   0.182561   1.279   0.2012    \ncountryBrazil                         0.007032   0.236253   0.030   0.9763    \ncountryCanada                        -0.294396   0.201705  -1.460   0.1446    \ncountryGermany                       -0.214793   0.209725  -1.024   0.3059    \ncountryIndia                         -0.154483   0.176416  -0.876   0.3813    \ncountryNigeria                       -0.007357   0.231081  -0.032   0.9746    \ncountryPakistan                       0.006994   0.173416   0.040   0.9678    \ncountryUAE                           -0.161551   0.196657  -0.821   0.4115    \ncountryUK                            -0.097504   0.196859  -0.495   0.6204    \ncountryUSA                           -0.079541   0.177237  -0.449   0.6536    \ngenderMale                            0.091099   0.081199   1.122   0.2620    \ngenderNon-binary                     -0.091354   0.224490  -0.407   0.6841    \ngenderPrefer not to say               0.284190   0.281613   1.009   0.3130    \nage                                   0.002589   0.005185   0.499   0.6177    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 1.753 on 1963 degrees of freedom\nMultiple R-squared:  0.01377,   Adjusted R-squared:  -0.004315 \nF-statistic: 0.7614 on 36 and 1963 DF,  p-value: 0.846\n\n\nLimitation: Our R^2 is very small and show that these predictors don’t explain for a lot of the variation in mental health.\nOpportunity: There may be other data that is linked more directly with mental health and social media or mental health and other predictors that represent it well."
   },
   {
     "objectID": "ai-use.html#substantive-prompts",
     "href": "ai-use.html#substantive-prompts",
     "title": "AI Use and Verification",
     "section": "Substantive prompts",
-    "text": "Substantive prompts\nPaste the exact prompts that shaped the extension. Include the customized extension-selection prompt from the checkpoint and any important implementation follow-ups. Delete unused prompt blocks.\n\nReplace with an exact prompt.\n\n\nReplace with another exact prompt, if needed."
+    "text": "Substantive prompts\nPaste the exact prompts that shaped the extension. Include the customized extension-selection prompt from the checkpoint and any important implementation follow-ups. Delete unused prompt blocks.\n\nI am creating a regression case study in R and Quarto. \nQuestion: How is mental health associated with age, gender, county, profession, daily usage hours, primary platform, notification frequency and sleep disruption? \nModel: \n$$ y_i = \\beta_0+\\beta_1\\text{age}_i + \\beta_2\\text{gender}_i +\\beta_3\\text{country}_i +\\beta_4\\text{profession}_i+\\beta_5\\text{usage}_i+\\beta_6\\text{platform}_i+\\beta_7\\text{notifications}_i+\\beta_8\\text{sleep_distruption}_i + \\epsilon_i \\\\ \\epsilon\\overset{\\text{i.i.d.}}{\\sim} N(0,\\sigma^2) $$\n{r} library(tidyverse) library(car) social_media &lt;- read.csv(“social_media_user_behavior.csv”) %&gt;% select(self_reported_mental_health_score, sleep_disruption, notification_frequency, daily_usage_hours, primary_platform, profession, country, gender, age) %&gt;% rename(mental_health = self_reported_mental_health_score) fitted_social &lt;- lm(mental_health ~ ., data = social_media) summary(fitted_social)\nLimitation: Our R^2 is very small and show that these predictors don’t explain for a lot of the variation in mental health. \nOpportunity: There may be other data that is linked more directly with mental health and social media or mental health and other predictors that represent it well. Suggest three feasible extensions that keep the core analysis connected to regression methods taught in my class. One option may be a model not taught in class used as a comparator. For each, explain how it strengthens the same research question, how its result would enter the final case study, the implementation steps, and two ways I could verify it. Do not choose for me."
   },
   {
     "objectID": "ai-use.html#my-decisions",
     "href": "ai-use.html#my-decisions",
     "title": "AI Use and Verification",
     "section": "My decisions",
-    "text": "My decisions\n\nAccepted: What useful advice did you use?\nChanged: What did you adapt to fit your data or goals?\nRejected or corrected: What advice was unsuitable, unnecessary, or wrong?\n\nConnection to the final case study: Identify where the extension’s method and result appear on the final page and how they strengthen the course-based analysis."
+    "text": "My decisions\n\nAccepted: Relax the linearity rule for some of our predictors, mainly the continuous ones like age and daily usage by using smooth spline functions.\nChanged: We changed the linearity rule for our continuous predictors in order to be splines.\nRejected or corrected: AI suggested a forest method but it was beyond our understanding and knowledge.\n\nConnection to the final case study: Adding a spline will effect our final model and affect every step along the way but we ultimately decided to use splines to help with our continuous predictors. We will justify a spline model in our final page."
   },
   {
     "objectID": "ai-use.html#independent-verification",
     "href": "ai-use.html#independent-verification",
     "title": "AI Use and Verification",
     "section": "Independent verification",
-    "text": "Independent verification\n\nCheck and result: Replace with an official source, diagnostic, simulation, manual calculation, comparison with a known method, or another suitable check.\nCheck and result: Replace with a different check and what you learned.\n\nLink or cite verification sources where appropriate. A second AI response does not count as independent verification."
+    "text": "Independent verification\n\nCheck and result:\ninfluence_data &lt;- social_media %&gt;%\n  mutate(\n    row = row_number(),\n    leverage = hatvalues(fitted_social),\n    std_resid = rstandard(fitted_social),\n    cooks_d = cooks.distance(fitted_social)\n  )\n\ninfluence_data %&gt;% slice_max(cooks_d, n = 5) %&gt;% select(row, cooks_d)\ninfluence_data %&gt;% slice_max(leverage, n = 3) %&gt;% select(row, leverage)\ninfluence_data %&gt;% slice_max(abs(std_resid), n = 3) %&gt;% select(row, std_resid)\nCheck and result:\n\n\nShow code\navPlots(fitted_social, terms = ~ mental_health + daily_usage_hours + age)\n\n\n\n\n\n\n\n\n\nShow code\nqqnorm(resid(fitted_social)); qqline(resid(fitted_social))\n\n\n\n\n\n\n\n\n\nShow code\nshapiro.test(resid(fitted_social))\n\n\n\n    Shapiro-Wilk normality test\n\ndata:  resid(fitted_social)\nW = 0.99681, p-value = 0.000356\n\n\n\nLink or cite verification sources where appropriate. A second AI response does not count as independent verification."
   },
   {
     "objectID": "ai-use.html#remaining-limitation",
     "href": "ai-use.html#remaining-limitation",
     "title": "AI Use and Verification",
     "section": "Remaining limitation",
-    "text": "Remaining limitation\nState one important uncertainty, failure mode, or limitation that remains."
+    "text": "Remaining limitation\nOur data has a lot of categorical data that cannot always be accounted for in the different plots and models."
   },
   {
     "objectID": "ai-use.html#other-ai-use-if-any",
     "href": "ai-use.html#other-ai-use-if-any",
     "title": "AI Use and Verification",
     "section": "Other AI use, if any",
-    "text": "Other AI use, if any\nBriefly disclose earlier debugging, proofreading, or other AI assistance. Write “None” if there was no other use."
+    "text": "Other AI use, if any\nWe used ChatGPT to publish the repository for GitHub"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Replace with a specific, informative title",
+    "title": "Does Social Media have an effect on mental health",
     "section": "",
     "text": "Narrative word count: Replace with a number from 750 to 1,000."
   },
   {
     "objectID": "index.html#the-question",
     "href": "index.html#the-question",
-    "title": "Replace with a specific, informative title",
+    "title": "Does Social Media have an effect on mental health",
     "section": "The question",
     "text": "The question\nIn one or two short paragraphs, introduce the setting, audience, focused research question, data source, observational unit, response, important predictors, and one important data limitation. Lead with what makes the question worth answering."
   },
   {
     "objectID": "index.html#what-the-baseline-shows",
     "href": "index.html#what-the-baseline-shows",
-    "title": "Replace with a specific, informative title",
+    "title": "Does Social Media have an effect on mental health",
     "section": "What the baseline shows",
     "text": "What the baseline shows\nDescribe and justify a simple course-based baseline regression model. Interpret the result that best establishes the rest of the story, including its direction, magnitude, scale, and uncertainty. Explain one limitation or unresolved pattern that motivates deeper analysis.\n\n\nShow code\n# Load packages and data, document preparation, and fit the baseline.\n\n\n\n\nShow code\n# Show a primary figure or table only if it helps answer the question."
   },
   {
     "objectID": "index.html#going-beyond-the-baseline",
     "href": "index.html#going-beyond-the-baseline",
-    "title": "Replace with a specific, informative title",
+    "title": "Does Social Media have an effect on mental health",
     "section": "Going beyond the baseline",
     "text": "Going beyond the baseline\nUse two STAT 330 method families. Give each part a descriptive heading that states the question or finding, not an assignment label. Explain why you chose each method, how you checked it, and what it adds to the answer.\n\nReplace with a question or finding\nPresent one method and its most useful evidence.\n\n\nShow code\n# Analysis code for this part.\n\n\n\n\nReplace with another question or finding\nPresent a method from a different family and its most useful evidence. Combine this with the preceding subsection if that creates a clearer story.\n\n\nShow code\n# Analysis code for this part."
   },
   {
     "objectID": "index.html#a-new-direction-with-ai",
     "href": "index.html#a-new-direction-with-ai",
-    "title": "Replace with a specific, informative title",
+    "title": "Does Social Media have an effect on mental health",
     "section": "A new direction with AI",
     "text": "A new direction with AI\nExplain the need revealed by your preliminary course-based work, the extension you implemented with AI support, and what it contributes to the same research question. Show its substantive result on this page and summarize your independent checks. If the extension is an untaught comparator, evaluate it against the core course-based model. Link to the AI-use record instead of placing a transcript here.\n\n\nShow code\n# Implement the verified extension or show its most useful result.\n\n\nDetails are in the AI-use record."
   },
   {
     "objectID": "index.html#what-this-means",
     "href": "index.html#what-this-means",
-    "title": "Replace with a specific, informative title",
+    "title": "Does Social Media have an effect on mental health",
     "section": "What this means",
     "text": "What this means\nAnswer the research question directly. Distinguish statistical evidence from practical importance, state the most consequential limitations, and suggest one sensible next step. Avoid causal claims unless the study design supports them."
   },
   {
     "objectID": "index.html#data-and-code",
     "href": "index.html#data-and-code",
-    "title": "Replace with a specific, informative title",
+    "title": "Does Social Media have an effect on mental health",
     "section": "Data and code",
-    "text": "Data and code\n\nData: Replace with a working source link or citation and any brief acquisition note needed to reproduce the project.\nRepository: Replace with your repository URL.\nAI-use record\nOther sources: Cite package documentation, articles, code, and other sources that materially informed the work."
+    "text": "Data and code\n\nData: https://www.kaggle.com/datasets/hmcodes27/social-media-user-behavior\nRepository: https://github.com/sc21tt/330-final-project\nAI-use record\nOther sources: None"
   }
 ]
