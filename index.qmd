@@ -1,14 +1,14 @@
 ---
-title: "Replace with a specific, informative title"
-subtitle: "Replace with one sentence that tells readers why the question matters"
-author: "Replace with all group members' names"
-date: last-modified
-description: "Replace with a brief description for link previews."
+title: "Does Social Media have an effect on mental health"
+subtitle: "Both social media and mental health are promiment issues in our day and affect all of us on a daily basis."
+author: "Sami Schofield, Claire Uryan, Annmarie Scott"
+date: 11/4/26
+description: "There is kaggle link for our dataset, a respository link to our GitHub and an AI usage link."
 ---
 
 **Narrative word count:** Replace with a number from 750 to 1,000.
 
-::: {.callout-tip}
+::: callout-tip
 This template suggests one way to tell the story. You may rename, combine, or reorder headings and add, remove, or move code chunks. Use plots, tables, selected model output, and prose in whatever combination best communicates your evidence. Keep every required part easy to find, use no more than four primary figures or tables, and delete this note and all bold prompts before submitting.
 :::
 
@@ -64,7 +64,7 @@ Details are in the [AI-use record](ai-use.qmd).
 
 ## Data and code
 
-- **Data:** Replace with a working source link or citation and any brief acquisition note needed to reproduce the project.
-- **Repository:** Replace with your repository URL.
+- **Data:** <https://www.kaggle.com/datasets/hmcodes27/social-media-user-behavior>
+- **Repository:** <https://github.com/sc21tt/330-final-project>
 - [AI-use record](ai-use.qmd)
-- **Other sources:** Cite package documentation, articles, code, and other sources that materially informed the work.
+- **Other sources:** None
